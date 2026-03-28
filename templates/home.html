@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Hero Sect -->
+<div class="d-flex" style="gap: 2rem; margin-bottom: 3rem;">
+    <!-- Main Hero -->
+    <div style="flex: 2; background: linear-gradient(135deg, #eef3ff, #e1e9fc); border-radius: var(--radius-lg); padding: 4rem; position: relative; overflow: hidden; display: flex; align-items: center;">
+        <div style="flex: 1; z-index: 10;">
+            <span class="badge mb-3">SEASONAL DROP</span>
+            <h1 style="font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 1rem;">The New Pro <br><span style="color: var(--primary-color);">Ecosystem.</span></h1>
+            <p class="text-muted" style="font-size: 1.1rem; max-width: 350px; margin-bottom: 2rem;">Experience clarity with the latest display technology. Up to 40% off on premium flagship devices.</p>
+            <a href="/products" class="btn btn-primary">Explore Collection</a>
+        </div>
+        <div style="flex: 1; text-align: right; z-index: 5;">
+            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&q=80" style="max-height: 350px; border-radius: var(--radius-lg); object-fit: cover; box-shadow: var(--shadow-xl); transform: rotate(-5deg);" alt="Hero Phone">
+        </div>
+    </div>
+
+    <!-- Side Banners — now functional links -->
+    <div style="flex: 1; display: flex; flex-direction: column; gap: 2rem;">
+        <!-- Noise-Canceling Audio / Flat ₹5,000 Off Headphones -->
+        <a href="/products?category=audio" style="flex: 1; background: #fafaf5; border-radius: var(--radius-lg); padding: 2rem; display: flex; align-items: center; text-decoration: none; color: inherit; transition: box-shadow 0.2s;" onmouseover="this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.boxShadow='none'">
+            <div style="flex: 1;">
+                <h3 style="font-size: 1.25rem;">Noise-Canceling Audio</h3>
+                <p style="color: #bc8221; font-weight: 600; font-size: 0.9rem; margin-top: 0.25rem;">Flat ₹5,000 Off</p>
+                <span style="font-size: 0.8rem; color: var(--primary-color); font-weight: 700; margin-top: 0.5rem; display: block;">Shop Headphones →</span>
+            </div>
+            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&q=80" style="width: 100px; height: 100px; object-fit: cover; border-radius: var(--radius);" alt="Headphones">
+        </a>
+        <!-- Home Aesthetics / Minimalist Living -->
+        <a href="/products?category=home" style="flex: 1; background: #fff5f2; border-radius: var(--radius-lg); padding: 2rem; display: flex; align-items: center; text-decoration: none; color: inherit; transition: box-shadow 0.2s;" onmouseover="this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.boxShadow='none'">
+            <div style="flex: 1;">
+                <h3 style="font-size: 1.25rem;">Home Aesthetics</h3>
+                <p style="color: #c74c3d; font-weight: 600; font-size: 0.9rem; margin-top: 0.25rem;">Minimalist Living</p>
+                <span style="font-size: 0.8rem; color: var(--primary-color); font-weight: 700; margin-top: 0.5rem; display: block;">Shop Home →</span>
+            </div>
+            <img src="https://images.unsplash.com/photo-1503602642458-232111445657?w=200&q=80" style="width: 100px; height: 100px; object-fit: cover; border-radius: var(--radius);" alt="Chair">
+        </a>
+    </div>
+</div>
+
+<!-- Categories -->
+<div class="d-flex justify-between" style="background: var(--bg-color); padding: 1rem 2rem; border-radius: 3rem; box-shadow: var(--shadow-sm); margin-bottom: 4rem; overflow-x: auto;">
+    {% for cat in ['Mobiles', 'Electronics', 'Wearables', 'Fashion', 'Audio', 'Beauty', 'Home'] %}
+    <a href="/products?category={{ cat|lower }}" class="d-flex align-center" style="gap: 0.5rem; background: var(--bg-alt); padding: 0.5rem 1.5rem; border-radius: 2rem; font-weight: 600; font-size: 0.9rem; cursor: pointer; text-decoration: none; color: inherit;">
+        <i data-lucide="tag" style="width: 16px; height: 16px; color: var(--primary-color);"></i>
+        <span>{{ cat }}</span>
+    </a>
+    {% endfor %}
+</div>
+
+<!-- Deals of the Day -->
+<div class="d-flex justify-between align-center mb-3">
+    <div>
+        <h2 style="font-size: 2rem; font-weight: 700;">Deals of the Day</h2>
+        <p class="text-muted">Curated offers updated every 24 hours.</p>
+    </div>
+    <a href="/products" style="color: var(--primary-color); font-weight: 600; font-size: 0.9rem;">View All Deals</a>
+</div>
+
+<div class="product-grid" style="margin-bottom: 5rem;">
+    {% for product in deals %}
+    <a href="/product/{{ product.id }}" class="product-card" style="cursor:pointer; text-decoration:none; color:inherit; display:block;">
+        <div class="product-image-container mb-3" style="background: var(--secondary-color);">
+            <img src="{{ product.image }}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=70';" alt="{{ product.name }}">
+            {% if product.discount %}
+            <div class="product-badge-overlay badge">{{ product.discount }}</div>
+            {% endif %}
+        </div>
+        <div>
+            <div class="product-brand">{{ product.desc }}</div>
+            <h3 class="product-title">{{ product.name }}</h3>
+            <div class="price-container mt-1">
+                <span class="price">₹{{ "{:,}".format(product.price) }}</span>
+                {% if product.old_price %}
+                <span class="old-price">₹{{ "{:,}".format(product.old_price) }}</span>
+                {% endif %}
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+
+<!-- Category Sections -->
+{% for category_name, category_products in categories.items() %}
+<div class="d-flex justify-between align-center mb-3">
+    <div>
+        <h2 style="font-size: 2rem; font-weight: 700;">{{ category_name|title }}</h2>
+        <p class="text-muted">Discover our {{ category_name }} collection.</p>
+    </div>
+    <a href="/products?category={{ category_name }}" style="color: var(--primary-color); font-weight: 600; font-size: 0.9rem;">View All {{ category_name|title }}</a>
+</div>
+
+<div class="product-grid" style="margin-bottom: 4rem;">
+    {% for product in category_products %}
+    <a href="/product/{{ product.id }}" class="product-card" style="cursor:pointer; text-decoration:none; color:inherit; display:block;">
+        <div class="product-image-container mb-3" style="background: var(--secondary-color);">
+            <img src="{{ product.image }}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=70';" alt="{{ product.name }}">
+            {% if product.badge %}
+            <div class="product-badge-overlay badge">{{ product.badge }}</div>
+            {% endif %}
+            {% if product.discount %}
+            <div class="product-badge-overlay badge" style="top:0.5rem; right:0.5rem; background:var(--primary-color);">{{ product.discount }}</div>
+            {% endif %}
+        </div>
+        <div>
+            <div class="product-brand">{{ product.category|upper }}</div>
+            <h3 class="product-title">{{ product.name }}</h3>
+            <div class="price-container mt-1">
+                <span class="price">₹{{ "{:,}".format(product.price) }}</span>
+                {% if product.old_price %}
+                <span class="old-price">₹{{ "{:,}".format(product.old_price) }}</span>
+                {% endif %}
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endfor %}
+
+<!-- Bottom Section -->
+<div class="d-flex" style="gap: 2rem; margin-bottom: 4rem;">
+    <!-- "The Next Frontier" — links to mobiles -->
+    <a href="/products?category=mobiles" style="flex: 1; border-radius: var(--radius-lg); overflow: hidden; position: relative; display: block; text-decoration: none;">
+        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&q=80" style="width: 100%; height: 100%; object-fit: cover; display: block;" alt="Glow Tech">
+        <div style="position: absolute; bottom: 0; left: 0; padding: 3rem; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; width: 100%;">
+            <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;">The Next Frontier.</h2>
+            <p style="color: #ddd; margin-bottom: 1.5rem;">Redefining what's possible in mobile computing. <br>Pre-order now for exclusive access.</p>
+            <span class="btn" style="background: white; color: black; font-weight: 700; display: inline-block;">Discover More</span>
+        </div>
+    </a>
+    <div style="flex: 1; display: flex; flex-direction: column; gap: 2rem;">
+        <!-- Sound Mastery — links to audio -->
+        <a href="/products?category=audio" style="flex: 1; background: #f4f6fa; border-radius: var(--radius-lg); padding: 3rem; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: inherit; transition: box-shadow 0.2s;" onmouseover="this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.boxShadow='none'">
+            <div>
+                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Sound Mastery</h3>
+                <p class="text-muted">Immersive 3D Audio Experience.</p>
+                <span style="font-size: 0.85rem; color: var(--primary-color); font-weight: 700; margin-top: 0.5rem; display: block;">Shop Audio →</span>
+            </div>
+            <!-- Mic image — links to audio mics -->
+            <a href="/products?category=audio&q=mic" style="display: block;" onclick="event.stopPropagation();">
+                <img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=200&q=80" style="width: 100px; height: 100px; object-fit: cover; border-radius: var(--radius); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" alt="Studio Mic">
+            </a>
+        </a>
+        <div class="d-flex" style="gap: 2rem; flex: 1;">
+            <div style="flex: 1; background: white; border-radius: var(--radius-lg); padding: 2rem; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid var(--border-color);">
+                <i data-lucide="truck" style="color: var(--primary-color); width: 32px; height: 32px;"></i>
+                <div>
+                    <h4 style="font-size: 1.1rem; margin-bottom: 0.25rem;">Next Day Delivery</h4>
+                    <p class="text-muted" style="font-size: 0.85rem;">Available on select pincodes.</p>
+                </div>
+            </div>
+            <div style="flex: 1; background: var(--primary-color); color: white; border-radius: var(--radius-lg); padding: 2rem; display: flex; flex-direction: column; justify-content: space-between;">
+                <i data-lucide="shield-check" style="color: white; width: 32px; height: 32px;"></i>
+                <div>
+                    <h4 style="font-size: 1.1rem; margin-bottom: 0.25rem;">Quality Guaranteed</h4>
+                    <p style="font-size: 0.85rem; color: rgba(255,255,255,0.8);">Rigorous 10-step inspection.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="padding: 3rem 1rem; max-width: 840px; margin: 0 auto;">
+    <h1 style="font-size: 2rem; font-weight: 800; margin-bottom: 1rem;">Account Information</h1>
+
+    {% if success %}
+    <div style="background: #ecfdf5; border: 1px solid #10b981; color: #065f46; padding: 0.8rem 1rem; border-radius: 8px; margin-bottom: 1rem;">{{ success }}</div>
+    {% endif %}
+    {% if error %}
+    <div style="background: #fef2f2; border: 1px solid #ef4444; color: #991b1b; padding: 0.8rem 1rem; border-radius: 8px; margin-bottom: 1rem;">{{ error }}</div>
+    {% endif %}
+
+    <div style="background: var(--bg-alt); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm); margin-bottom:1.5rem;">
+        <h2 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 1rem;">Profile</h2>
+        <form method="POST" action="/account">
+            <input type="hidden" name="section" value="profile">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <label style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Full Name</label>
+                    <input type="text" name="name" value="{{ name }}" required style="width:100%; padding:0.75rem; margin-top:0.3rem; border:1px solid var(--border-color); border-radius: var(--radius);">
+                </div>
+                <div>
+                    <label style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Email</label>
+                    <input type="email" name="email" value="{{ email }}" required style="width:100%; padding:0.75rem; margin-top:0.3rem; border:1px solid var(--border-color); border-radius: var(--radius);">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Save Profile</button>
+        </form>
+    </div>
+
+    <div style="background: var(--bg-alt); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm); margin-bottom:1.5rem;">
+        <h2 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 1rem;">Change Password</h2>
+        <form method="POST" action="/account">
+            <input type="hidden" name="section" value="password">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <label style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Current Password</label>
+                    <input type="password" name="current_password" required style="width:100%; padding:0.75rem; margin-top:0.3rem; border:1px solid var(--border-color); border-radius: var(--radius);">
+                </div>
+                <div>
+                    <label style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">New Password</label>
+                    <input type="password" name="new_password" required style="width:100%; padding:0.75rem; margin-top:0.3rem; border:1px solid var(--border-color); border-radius: var(--radius);">
+                </div>
+            </div>
+            <div style="margin-top: 1rem;">
+                <label style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Confirm New Password</label>
+                <input type="password" name="confirm_password" required style="width:100%; padding:0.75rem; margin-top:0.3rem; border:1px solid var(--border-color); border-radius: var(--radius);">
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Change Password</button>
+        </form>
+    </div>
+
+    <div style="background: var(--bg-alt); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm);">
+        <h2 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 1rem;">Summary</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+            <div style="background:white; padding:1rem; border-radius:var(--radius); border:1px solid var(--border-color);">
+                <p style="margin:0; font-size:0.75rem; color:var(--text-muted);">Username</p>
+                <p style="margin:0; font-weight:600;">{{ name }}</p>
+            </div>
+            <div style="background:white; padding:1rem; border-radius:var(--radius); border:1px solid var(--border-color);">
+                <p style="margin:0; font-size:0.75rem; color:var(--text-muted);">Email</p>
+                <p style="margin:0; font-weight:600;">{{ email }}</p>
+            </div>
+            <div style="background:white; padding:1rem; border-radius:var(--radius); border:1px solid var(--border-color);">
+                <p style="margin:0; font-size:0.75rem; color:var(--text-muted);">Member Since</p>
+                <p style="margin:0; font-weight:600;">{{ created_at }}</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

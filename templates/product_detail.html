@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="font-size: 0.75rem; letter-spacing: 1px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem;">
+    <a href="/products?category={{ product.category }}" style="color: var(--text-muted); text-decoration: none;">{{ product.category }}</a>
+    <i data-lucide="chevron-right" style="width: 14px; height: 14px;"></i>
+    <span>PREMIUM</span>
+    <i data-lucide="chevron-right" style="width: 14px; height: 14px;"></i>
+    <span style="color: var(--text-main);">{{ product.name }}</span>
+</div>
+
+<div class="d-flex" style="gap: 4rem; margin-bottom: 5rem;">
+    <!-- Left: Image Gallery -->
+    <div style="flex: 1; display: flex; gap: 1.5rem;">
+        <!-- Thumbnails -->
+        <div class="d-flex flex-column" style="gap: 1rem;" id="gallery_selector">
+            <div class="gallery-thumb" onclick="setGallery(0, this)" style="width: 60px; height: 60px; border-radius: var(--radius); border: 2px solid var(--primary-color); overflow: hidden; cursor: pointer; background: var(--bg-alt);">
+                <img src="{{ product.colors[0].image }}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&q=70';" style="width: 100%; height: 100%; object-fit: cover; transition: all 0.3s;" alt="Thumb 1">
+            </div>
+            <div class="gallery-thumb" onclick="setGallery(1, this)" style="width: 60px; height: 60px; border-radius: var(--radius); border: 2px solid transparent; overflow: hidden; cursor: pointer; background: var(--bg-alt);">
+                <img src="{{ product.colors[0].image }}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&q=70';" style="width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); transition: all 0.3s;" alt="Thumb 2">
+            </div>
+            <div class="gallery-thumb" onclick="setGallery(2, this)" style="width: 60px; height: 60px; border-radius: var(--radius); border: 2px solid transparent; overflow: hidden; cursor: pointer; background: var(--bg-alt); display: flex; align-items: center; justify-content: center;">
+                <img src="{{ product.colors[0].image }}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&q=70';" style="width: 150%; height: 150%; object-fit: cover; transition: all 0.3s;" alt="Thumb 3">
+            </div>
+        </div>
+        <!-- Main Image -->
+        <div style="flex: 1; background: var(--bg-alt); border-radius: var(--radius-lg); position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; min-height: 500px;">
+            <div style="position: absolute; top: 1.5rem; left: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; z-index: 5;">
+                {% if product.badge %}
+                <span class="badge" style="background: var(--primary-color); color: white;">{{ product.badge }}</span>
+                {% endif %}
+                <span class="badge">BEST SELLER</span>
+            </div>
+            <div style="width: 80%; max-height: 90%; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                <img id="main_product_image" src="{{ product.colors[0].image }}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=70';" style="width: 100%; height: 100%; object-fit: contain; z-index: 2; transition: all 0.3s ease;" alt="{{ product.name }}">
+            </div>
+        </div>
+    </div>
+
+    <!-- Right: Product Details -->
+    <div style="flex: 1; display: flex; flex-direction: column;">
+        <h1 style="font-size: 2.5rem; font-weight: 700; line-height: 1.2; margin-bottom: 1rem;">{{ product.name }} <br><span style="font-size: 2rem; font-weight: 500;">({{ product.desc }})</span></h1>
+        
+        <div class="d-flex align-center" style="gap: 1rem; margin-bottom: 1.5rem;">
+            <div style="background: #e6f4ea; color: #137333; padding: 0.25rem 0.5rem; border-radius: 4px; font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; gap: 0.25rem;">
+                4.8 <i data-lucide="star" style="width: 12px; height: 12px; fill: #137333;"></i>
+            </div>
+            <span class="text-muted" style="font-size: 0.9rem;">12,453 Ratings & 1,204 Reviews</span>
+        </div>
+
+        <div class="d-flex align-center" style="gap: 1rem; margin-bottom: 2rem;">
+            <span style="font-size: 2.5rem; font-weight: 800;">₹{{ "{:,}".format(product.price) }}</span>
+            {% if product.old_price %}
+            <span class="text-muted" style="font-size: 1.25rem; text-decoration: line-through;">₹{{ "{:,}".format(product.old_price) }}</span>
+            {% endif %}
+            {% if product.discount %}
+            <span style="color: #bc8221; font-weight: 700; font-size: 1.1rem;">{{ product.discount }}</span>
+            {% endif %}
+        </div>
+
+        <form action="/add_to_cart/{{ product.id }}" method="POST">
+            <input type="hidden" name="product_option" id="product_option" value="{{ product.options.choices[0] }}">
+
+            <div class="mb-4">
+                <h4 class="form-label text-muted">COLOR</h4>
+                <div class="d-flex align-center" style="gap: 0.75rem;">
+                    <div style="width: 18px; height: 18px; border-radius: 50%; background: {{ product.colors[0].hex }}; border: 1px solid var(--border-color);"></div>
+                    <span style="font-size: 0.95rem; color: var(--text-muted);">{{ product.colors[0].name }}</span>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <h4 class="form-label text-muted">{{ product.options.name }}</h4>
+                <div class="d-flex align-center mt-2" style="gap: 1rem; flex-wrap: wrap;">
+                    {% for choice in product.options.choices %}
+                    <div class="custom-pill" onclick="selectCustom('{{ choice }}', this)" 
+                         style="{{ 'background: var(--primary-color); color: white; border: 1px solid var(--primary-color);' if loop.first else 'border: 1px solid var(--border-color);' }} padding: 0.5rem 1.5rem; border-radius: 2rem; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.2s;"
+                         data-active="{{ 'true' if loop.first else 'false' }}">
+                         {{ choice }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="d-flex align-center" style="gap: 1.5rem; margin-top: 1rem; margin-bottom: 3rem;">
+                <button type="submit" class="btn" style="flex: 1; border: 1px solid var(--border-color); display: flex; justify-content: center; align-items: center; gap: 0.5rem; padding: 1rem; border-radius: 3rem; background: white; cursor: pointer;">
+                    <i data-lucide="shopping-bag" style="width: 20px; height: 20px;"></i> ADD TO CART
+                </button>
+                <button type="submit" name="buy_now" value="1" class="btn btn-primary" style="flex: 1; display: flex; justify-content: center; align-items: center; gap: 0.5rem; padding: 1rem; border-radius: 3rem; background: var(--primary-color); color: white; border: none; font-size: 1rem; cursor: pointer;">
+                    <i data-lucide="zap" style="width: 20px; height: 20px; fill: white;"></i> BUY NOW
+                </button>
+            </div>
+        </form>
+
+        <script>
+            let currentColor = '{{ product.colors[0].name }}';
+            let customOption = '{{ product.options.choices[0] }}';
+
+            function updateHidden() {
+                document.getElementById('product_option').value = currentColor + " / " + customOption;
+            }
+
+            // init once
+            updateHidden();
+
+
+            function setGallery(index, el) {
+                let mainImg = document.getElementById('main_product_image');
+                if (index === 0) {
+                    mainImg.style.transform = 'none';
+                } else if (index === 1) {
+                    mainImg.style.transform = 'scaleX(-1)';
+                } else if (index === 2) {
+                    mainImg.style.transform = 'scale(1.5)';
+                }
+
+                let thumbs = document.querySelectorAll('.gallery-thumb');
+                thumbs.forEach(t => t.style.borderColor = 'transparent');
+                el.style.borderColor = 'var(--primary-color)';
+            }
+
+            function selectCustom(val, el) {
+                customOption = val;
+                // reset custom pills
+                let pills = document.querySelectorAll('.custom-pill');
+                pills.forEach(p => {
+                    p.style.background = '';
+                    p.style.color = '';
+                    p.style.border = '1px solid var(--border-color)';
+                });
+                // set active
+                el.style.background = 'var(--primary-color)';
+                el.style.color = 'white';
+                el.style.border = '1px solid var(--primary-color)';
+                updateHidden();
+            }
+        </script>
+
+        <div style="border-top: 1px solid var(--border-color); padding-top: 2rem;">
+            <div class="d-flex mb-3" style="gap: 1rem;">
+                <i data-lucide="tag" style="color: var(--accent-yellow); width: 20px; height: 20px; flex-shrink: 0;"></i>
+                <div>
+                    <h5 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.25rem;">Bank Offer</h5>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.4;">Flat ₹5,000 Off on NexBank Credit Card Transactions. <a href="#" style="color: var(--primary-color);">T&C Apply</a></p>
+                </div>
+            </div>
+            <div class="d-flex" style="gap: 1rem;">
+                <i data-lucide="shield-check" style="color: var(--accent-yellow); width: 20px; height: 20px; flex-shrink: 0;"></i>
+                <div>
+                    <h5 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.25rem;">Warranty</h5>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.4;">1 Year Warranty for Phone and 6 Months Warranty for In-Box Accessories.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Specs Section -->
+<div style="margin-bottom: 5rem;">
+    <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 2rem;">Technical Specifications</h2>
+    
+    <div style="background: var(--secondary-color); border-radius: var(--radius-lg); padding: 3rem; display: flex; gap: 4rem; overflow-x: auto;">
+        
+        {% for spec in product.specs %}
+        <div style="flex: 1; min-width: 250px;">
+            <div class="d-flex align-center mb-4" style="gap: 1rem;">
+                <div style="width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);">
+                    <i data-lucide="{{ spec.icon }}" style="color: var(--primary-color); width: 20px; height: 20px;"></i>
+                </div>
+                <h3 style="font-size: 1.25rem; font-weight: 600;">{{ spec.title }}</h3>
+            </div>
+            
+            {% for key, val in spec.rows.items() %}
+            <div class="d-flex justify-between mb-3 border-bottom" style="border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+                <span class="text-muted" style="font-size: 0.9rem;">{{ key }}</span>
+                <span style="font-weight: 600; font-size: 0.9rem; text-align: right;">{{ val }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+<!-- Customers also bought -->
+<div style="margin-bottom: 5rem;">
+    <div class="d-flex justify-between align-center mb-4">
+        <h2 style="font-size: 2rem; font-weight: 700;">Customers also bought</h2>
+        <a href="/products?category={{ product.category }}" style="color: var(--primary-color); font-weight: 600; font-size: 0.9rem; text-decoration: none;">See all in {{ product.category|title }} &rarr;</a>
+    </div>
+    
+    <div class="product-grid" style="grid-template-columns: repeat(4, 1fr); gap: 1.5rem;">
+        {% for rel_product in related_products %}
+        <a href="/product/{{ rel_product.id }}" class="product-card" style="display:block; text-decoration:none; color:inherit; box-shadow:none; border:1px solid transparent; transition:box-shadow 0.2s,border-color 0.2s;"
+           onmouseover="this.style.boxShadow='var(--shadow-md)'; this.style.borderColor='var(--border-color)';"
+           onmouseout="this.style.boxShadow='none'; this.style.borderColor='transparent';">
+            <div class="product-image-container" style="background: var(--bg-color); height: 200px;">
+                <img src="{{ rel_product.image }}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=70';" style="object-fit: contain; max-height: 80%;" alt="{{ rel_product.name }}">
+                {% if rel_product.discount %}<div class="product-badge-overlay badge">{{ rel_product.discount }}</div>{% endif %}
+            </div>
+            <div class="product-info" style="padding-top: 1rem;">
+                <div class="product-brand" style="font-size: 0.65rem;">{{ rel_product.category|upper }}</div>
+                <h3 class="product-title" style="font-size: 1rem;">{{ rel_product.name }}</h3>
+                <div class="d-flex align-center" style="gap: 0.3rem; margin: 0.25rem 0;">
+                    {% set rr = rel_product.get('rating', 4.0) %}
+                    {% for i in range(1, 6) %}
+                        {% if i <= rr %}<i data-lucide="star" style="width:12px;height:12px;fill:#f0a500;stroke:#f0a500;"></i>
+                        {% else %}<i data-lucide="star" style="width:12px;height:12px;fill:transparent;stroke:#b0b0b0;"></i>{% endif %}
+                    {% endfor %}
+                    <span style="color:var(--text-muted); font-size:0.78rem; margin-left:2px;">{{ rr }}</span>
+                </div>
+                <div class="price-container mt-1">
+                    <span class="price" style="font-size: 1.1rem;">₹{{ "{:,}".format(rel_product.price) }}</span>
+                    {% if rel_product.old_price %}<span class="old-price" style="font-size: 0.8rem;">₹{{ "{:,}".format(rel_product.old_price) }}</span>{% endif %}
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

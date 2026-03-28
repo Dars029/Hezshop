@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="min-height: 80vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+    <!-- Decorative floating cards -->
+    <div style="position: absolute; left: 5%; top: 20%; transform: rotate(-15deg); width: 200px; padding: 1rem; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); opacity: 0.8;">
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&q=80" style="width: 100%; border-radius: var(--radius); margin-bottom: 0.5rem;" alt="Headphones">
+        <div style="height: 10px; background: var(--bg-alt); border-radius: 5px; width: 60%; margin-bottom: 5px;"></div>
+        <div style="height: 10px; background: var(--bg-alt); border-radius: 5px; width: 40%;"></div>
+    </div>
+    
+    <div style="position: absolute; right: 5%; bottom: 20%; transform: rotate(15deg); width: 200px; padding: 1rem; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); opacity: 0.8;">
+        <img src="https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=200&q=80" style="width: 100%; border-radius: var(--radius); margin-bottom: 0.5rem;" alt="Watch">
+        <div style="height: 10px; background: var(--bg-alt); border-radius: 5px; width: 80%; margin-bottom: 5px;"></div>
+        <div style="height: 10px; background: var(--bg-alt); border-radius: 5px; width: 50%;"></div>
+    </div>
+
+    <div class="form-container" style="position:relative; z-index: 10; width: 100%; max-width: 480px;">
+        <a href="/" class="d-flex align-center text-muted" style="gap: 0.5rem; font-size: 0.85rem; font-weight: 600; margin-bottom: 2rem; position: absolute; top: 1rem; left: 1rem;">
+            <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Back to Home
+        </a>
+        <div class="text-center mb-4" style="text-align: center; margin-top: 2rem;">
+            <div style="width: 48px; height: 48px; background: var(--primary-color); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                <i data-lucide="shopping-bag" style="color: white; width: 24px; height: 24px;"></i>
+            </div>
+            <h2 style="font-size: 2rem; font-weight: 700;">Hezshop</h2>
+            <p class="text-muted mt-1" style="font-size: 1.1rem;">Create your Hezshop account</p>
+        </div>
+
+        <form method="POST">
+            <div class="form-group mb-3">
+                <label class="form-label" style="font-size: 0.75rem;">FULL NAME</label>
+                <input type="text" name="name" class="form-input" style="background: var(--bg-alt); border-radius: var(--radius);" placeholder="Alex Johnson" required>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="form-label" style="font-size: 0.75rem;">EMAIL ADDRESS</label>
+                <input type="email" name="email" class="form-input" style="background: var(--bg-alt); border-radius: var(--radius);" placeholder="alex@example.com" required>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="form-label" style="font-size: 0.75rem;">PASSWORD</label>
+                <input type="password" name="password" class="form-input" style="background: var(--bg-alt); border-radius: var(--radius);" placeholder="••••••••" required minlength="6">
+            </div>
+
+            {% if error %}
+            <div style="color: #ef4444; font-size: 0.875rem; margin-top: 1rem; text-align: center;">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            {% if success %}
+            <div style="color: #10b981; font-size: 0.875rem; margin-top: 1rem; text-align: center;">
+                {{ success }}
+            </div>
+            {% endif %}
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; border-radius: var(--radius-lg); font-size: 1.1rem; justify-content: center; align-items: center; gap: 0.5rem;">
+                Create Account
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 2rem; position: relative;">
+            <div style="height: 1px; background: var(--border-color); width: 100%; position: absolute; top: 50%; z-index: 1;"></div>
+            <span style="background: var(--bg-color); padding: 0 1rem; position: relative; z-index: 2; font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Or continue with</span>
+        </div>
+
+        <div class="d-flex" style="gap: 1rem; margin-top: 1.5rem;">
+            <button class="btn" style="flex: 1; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 600; font-size: 0.9rem; padding: 0.8rem; border-radius: var(--radius);">
+                <i data-lucide="mail" style="width: 18px; height: 18px; color: var(--primary-color);"></i> Via Email OTP
+            </button>
+            <button class="btn" style="flex: 1; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 600; font-size: 0.9rem; padding: 0.8rem; border-radius: var(--radius);">
+                <i data-lucide="smartphone" style="width: 18px; height: 18px; color: var(--primary-color);"></i> Via Mobile
+            </button>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem; font-size: 0.9rem;">
+            Already have an account? <a href="/login" style="color: var(--primary-color); font-weight: 700; margin-left: 0.25rem;">Login</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

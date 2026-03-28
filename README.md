@@ -1,80 +1,76 @@
 # 🛒 HEZSHOP
 
-A simple e-commerce web application built using Flask.
+A modern e-commerce web application built using Flask.
+This project demonstrates a basic online shopping system with user authentication, product browsing, and cart functionality.
 
 ---
 
-## 🚀 Features
+## 🚀 Overview
 
-* User signup and login
-* Product listing
-* Product detail page
+HEZSHOP is a web-based application designed to simulate an online shopping experience.
+It allows users to explore products, view details, manage their cart, and interact with a clean UI.
+
+---
+
+## ✨ Features
+
+* User authentication (Login & Signup)
+* Product listing page
+* Product detail view
 * Shopping cart system
+* Responsive UI with custom styling
 
 ---
 
-## 🗂 Project Structure
+## 🗂️ Project Structure
 
-* `app.py` → Main Flask app
-* `templates/` → HTML files
-* `static/` → CSS files
-
----
-
-## ⚙️ Installation & Setup
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/YOUR_USERNAME/hezshop.git
-cd hezshop
 ```
-
-### 2. Create virtual environment
-
-```bash
-python -m venv .venv
-```
-
-### 3. Activate virtual environment
-
-#### Windows:
-
-```bash
-.venv\Scripts\activate
-```
-
-#### Mac/Linux:
-
-```bash
-source .venv/bin/activate
-```
-
-### 4. Install dependencies
-
-```bash
-pip install flask
+HEZSHOP/
+│
+├── app.py                # Main Flask application
+│
+├── static/              # Static files (CSS, images, JS)
+│   └── style.css
+│
+├── templates/           # HTML templates
+│   ├── base.html
+│   ├── home.html
+│   ├── products.html
+│   ├── product_detail.html
+│   ├── cart.html
+│   ├── login.html
+│   ├── signup.html
+│   └── account.html
+│
+├── .gitignore           # Ignored files for Git
+└── README.md            # Project documentation
 ```
 
 ---
 
-## ▶️ Run the Application
+## 🧰 Requirements
 
-```bash
-python app.py
-```
+To run this project, ensure you have the following installed:
 
-Then open your browser and go to:
+* Python 3.14.3
+* Flask
+* Web Browser (Chrome, Edge, etc.)
 
-```
-http://127.0.0.1:5000
-```
+---
+
+## 🧠 Technologies Used
+
+* Python (Flask)
+* HTML5
+* CSS3
 
 ---
 
 ## 📌 Notes
 
-* Make sure Python is installed
+* This project is for educational purposes
+* The backend uses Flask without a database 
+* UI is styled using custom CSS
 
 ---
 
